@@ -14,6 +14,9 @@ import (
 	"os"
 )
 
+const studentName = "Denis Sakhno"
+const studentID = "41121593"
+
 // readFacilitiesFromCSV reads the CSV file and parses records into Facility structs
 // Returns a slice of Facility objects and any error encountered
 func readFacilitiesFromCSV(filename string) ([]Facility, error) {
@@ -106,7 +109,8 @@ func displayFacilities(facilities []Facility) {
 func main() {
 	// Display program header
 	fmt.Println("*** NPRI Facility Data Reader ***")
-	fmt.Println("Author: Denis Sakhno")
+	fmt.Printf("Author: %s", studentName)
+	fmt.Printf(" Student ID: %s", studentID)
 	fmt.Println()
 	fmt.Println("Loading facility data...")
 	fmt.Println()
