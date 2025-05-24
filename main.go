@@ -38,11 +38,11 @@ func readFacilitiesFromCSV(filename string) ([]Facility, error) {
 		return nil, fmt.Errorf("CSV file is empty")
 	}
 
-	// Initialize slice to store facility objects
+	// Initialize slice (dynamic array) to store facility objects
 	var facilities []Facility
 
 	// Parse first few records (skip header at index 0)
-	maxRecords := 5 // Limit to first 5 data records
+	const maxRecords = 5 // Constant defining number of records to process
 	for i := 1; i < len(records) && i <= maxRecords; i++ {
 		record := records[i]
 
@@ -105,7 +105,9 @@ func displayFacilities(facilities []Facility) {
 
 func main() {
 	// Display program header
-	fmt.Println("***NPRI Facility Data Reader***")
+	fmt.Println("*** NPRI Facility Data Reader ***")
+	fmt.Println("Author: Denis Sakhno")
+	fmt.Println()
 	fmt.Println("Loading facility data...")
 	fmt.Println()
 
@@ -121,4 +123,6 @@ func main() {
 
 	// Loop over and display the facility data
 	displayFacilities(facilities)
+	fmt.Println("Program completed successfully")
+	fmt.Println("Author: Denis Sakhno")
 }
