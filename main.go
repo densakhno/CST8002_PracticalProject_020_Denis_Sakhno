@@ -71,6 +71,38 @@ func readFacilitiesFromCSV(filename string) ([]Facility, error) {
 	return facilities, nil
 }
 
+// displayFacilities loops through the facility data structure and outputs each record
+func displayFacilities(facilities []Facility) {
+	fmt.Println("*** Facility Records ***")
+
+	// Loop over the data structure containing facility objects
+	for index, facility := range facilities {
+		fmt.Printf("--- Record %d ---\n", index+1)
+		fmt.Printf("NPRI ID: %s\n", facility.NPRIID)
+		fmt.Printf("Facility: %s\n", facility.FacilityName)
+		fmt.Printf("Company: %s\n", facility.CompanyName)
+
+		// Display address information
+		if facility.Address != "" {
+			fmt.Printf("Address: %s\n", facility.Address)
+		}
+		fmt.Printf("Location: %s, %s %s\n", facility.City, facility.Province, facility.PostalCode)
+
+		// Display geographic coordinates
+		if facility.Latitude != "" && facility.Longitude != "" {
+			fmt.Printf("Coordinates: %s, %s\n", facility.Latitude, facility.Longitude)
+		}
+
+		// Display emissions data
+		if facility.Emissions != "" {
+			fmt.Printf("Emissions: %s %s\n", facility.Emissions, facility.Units)
+		}
+
+		fmt.Printf("Report Year: %s\n", facility.ReportYear)
+		fmt.Println() // Empty line for readability
+	}
+}
+
 func main() {
 	// Display program header
 	fmt.Println("***NPRI Facility Data Reader***")
@@ -86,4 +118,7 @@ func main() {
 	}
 
 	fmt.Printf("Successfully loaded %d facility records.\n\n", len(facilities))
+
+	// Loop over and display the facility data
+	displayFacilities(facilities)
 }
