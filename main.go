@@ -19,8 +19,8 @@ import (
 
 func main() {
 	// Ensure data file exists
-	repo := persistence.NewFileRepository("data/data.csv")
-	ok, err := repo.CheckFileExists("data/data.csv")
+	repo := persistence.NewFileRepository(persistence.PathToData)
+	ok, err := repo.CheckFileExists(persistence.PathToData)
 	if err != nil {
 		fmt.Printf("Error checking data file: %v\n", err)
 		os.Exit(1)

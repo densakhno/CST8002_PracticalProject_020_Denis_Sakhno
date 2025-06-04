@@ -19,6 +19,8 @@ import (
 	"github.com/google/uuid"
 )
 
+const PathToData = "data/data.csv"
+
 // FileRepository provides file-based data persistence operations
 // Handles reading from and writing to CSV files with proper error handling
 type FileRepository struct {
