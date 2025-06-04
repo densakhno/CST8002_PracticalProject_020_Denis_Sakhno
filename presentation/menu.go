@@ -20,6 +20,9 @@ import (
 	"github.com/denissakhno/CST8002_PracticalProject_020/models"
 )
 
+const studentName = "Denis Sakhno"
+const studentID = "41121593"
+
 // MenuSystem provides user interface operations for facility management
 // Handles all user interactions and coordinates with business layer
 type MenuSystem struct {
@@ -44,8 +47,8 @@ func NewMenuSystem(service *business.FacilityService) *MenuSystem {
 func (ms *MenuSystem) DisplayHeader() {
 	fmt.Println("╔══════════════════════════════════════════════════════════╗")
 	fmt.Println("║              NPRI Facility Management System             ║")
-	fmt.Println("║              Author: Denis Sakhno                        ║")
-	fmt.Println("║            N-Layered Architecture Demo                   ║")
+	fmt.Printf("║              Author: %s                        ║\n", studentName)
+		fmt.Printf("║              ID: %s                                ║\n", studentID)
 	fmt.Println("╚══════════════════════════════════════════════════════════╝")
 	fmt.Println()
 }
