@@ -8,8 +8,10 @@ type DBrepository struct {
     db *sql.DB
 }
 
+const dbName = "cst8002"
+
 func NewDBrepository(dsn string) (*DBrepository, error) {
-    db, err := sql.Open("mysql", dsn)
+    db, err := sql.Open(dbName, dsn)
     if err != nil {
         return nil, err
     }
