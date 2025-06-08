@@ -1,0 +1,24 @@
+-- Create database
+CREATE DATABASE IF NOT EXISTS cst8002
+  DEFAULT CHARACTER SET utf8mb4
+  DEFAULT COLLATE utf8mb4_unicode_ci;
+
+USE cst8002;
+
+-- Create facilities table
+CREATE TABLE IF NOT EXISTS facilities (
+    npriid VARCHAR(64) PRIMARY KEY,
+    facilityname VARCHAR(255),
+    companyname VARCHAR(255),
+    address VARCHAR(255),
+    city VARCHAR(100),
+    province VARCHAR(100),
+    postalcode VARCHAR(20),
+    latitude VARCHAR(50),
+    longitude VARCHAR(50),
+    emissions VARCHAR(50),
+    units VARCHAR(50),
+    facilitydetails TEXT,
+    facilityinfo TEXT,
+    reportyear VARCHAR(10)
+);
