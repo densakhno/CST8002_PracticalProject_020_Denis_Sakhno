@@ -56,3 +56,18 @@ func (mr *DBrepository) LoadFacilities() ([]*models.Facility, error) {
     }
     return facilities, rows.Err()
 }
+
+func (mr *DBrepository) UpdateAllFacilityInfo(f *models.Facility) error {
+    _, err := mr.db.Exec(`
+        UPDATE facilities SET
+            facilityname=?, companyname=?, address=?, city=?, province=?, postalcode=?,
+            latitude=?, longitude=?, emissions=?, units=?,
+            facilitydetails=?, facilityinfo=?, reportyear=?
+        WHERE npriid=?`,
+        f.FacilityName, f.CompanyName, f.Address, f.City, f.Province, f.PostalCode,
+        f.Latitude, f.Longitude, f.Emissions, f.Units,
+        f.FacilityDetails, f.FacilityInfo, f.ReportYear,
+        f.NPRIID,
+    )
+    return err
+}
