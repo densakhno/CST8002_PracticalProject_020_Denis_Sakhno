@@ -2,6 +2,8 @@ package persistence
 
 import (
 	"database/sql"
+
+	"github.com/denissakhno/CST8002_PracticalProject_020/models"
 )
 
 type DBrepository struct {
@@ -27,4 +29,30 @@ func (mr *DBrepository) Close() error {
         return mr.db.Close()
     }
     return nil
+}
+
+func (mr *DBrepository) LoadFacilities() ([]*models.Facility, error) {
+    rows, err := mr.db.Query(
+        `SELECT npriid, facilityname, companyname, address,
+                city, province, postalcode, latitude, longitude,
+                emissions, units, facilitydetails, facilityinfo, reportyear
+         FROM facilities`)
+    if err != nil {
+        return nil, err
+    }
+    defer rows.Close()
+
+    var facilities []*models.Facility
+    for rows.Next() {
+        var f models.Facility
+        err := rows.Scan(
+            &f.NPRIID, &f.FacilityName, &f.CompanyName, &f.Address,
+            &f.City, &f.Province, &f.PostalCode, &f.Latitude, &f.Longitude,
+            &f.Emissions, &f.Units, &f.FacilityDetails, &f.FacilityInfo, &f.ReportYear,
+        )
+        if err == nil {
+            facilities = append(facilities, &f)
+        }
+    }
+    return facilities, rows.Err()
 }
