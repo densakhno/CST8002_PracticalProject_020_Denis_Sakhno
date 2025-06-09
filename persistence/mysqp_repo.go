@@ -3,6 +3,8 @@ package persistence
 import (
 	"database/sql"
 
+	_ "github.com/go-sql-driver/mysql"
+
 	"github.com/denissakhno/CST8002_PracticalProject_020/models"
 )
 
@@ -10,10 +12,8 @@ type DBrepository struct {
     db *sql.DB
 }
 
-const dbName = "cst8002"
-
 func NewDBrepository(dsn string) (*DBrepository, error) {
-    db, err := sql.Open(dbName, dsn)
+    db, err := sql.Open("mysql", dsn)
     if err != nil {
         return nil, err
     }
