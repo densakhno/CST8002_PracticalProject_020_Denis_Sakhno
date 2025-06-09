@@ -58,14 +58,13 @@ func (ms *MenuSystem) DisplayHeader() {
 func (ms *MenuSystem) DisplayMainMenu() {
 	fmt.Println("═══ Main Menu ═══")
 	fmt.Println("1. Reload data from dataset")
-	fmt.Println("2. Save data to file (with GUID filename)")
-	fmt.Println("3. Display records")
-	fmt.Println("4. Create new record")
-	fmt.Println("5. Edit existing record")
-	fmt.Println("6. Delete record")
-	fmt.Println("7. Search facilities")
-	fmt.Println("8. View data summary")
-	fmt.Println("9. Exit")
+	fmt.Println("2. Display records")
+	fmt.Println("3. Create new record")
+	fmt.Println("4. Edit existing record")
+	fmt.Println("5. Delete record")
+	fmt.Println("6. Search facilities")
+	fmt.Println("7. View data summary")
+	fmt.Println("8. Exit")
 	fmt.Printf("\nCurrent facilities in memory: %d\n", ms.service.GetFacilityCount())
 	fmt.Print("Select an option (1-9): ")
 }
@@ -101,20 +100,18 @@ func (ms *MenuSystem) RunMainLoop() {
 		case "1":
 			ms.handleReloadData()
 		case "2":
-			ms.handleSaveData()
-		case "3":
 			ms.handleDisplayRecords()
-		case "4":
+		case "3":
 			ms.handleCreateRecord()
-		case "5":
+		case "4":
 			ms.handleEditRecord()
-		case "6":
+		case "5":
 			ms.handleDeleteRecord()
-		case "7":
+		case "6":
 			ms.handleSearchFacilities()
-		case "8":
+		case "7":
 			ms.handleDataSummary()
-		case "9":
+		case "8":
 			ms.handleExit()
 			return
 		default:
@@ -149,25 +146,6 @@ func (ms *MenuSystem) handleReloadData() {
 	}
 
 	fmt.Printf("Successfully reloaded %d facilities from dataset.\n", count)
-}
-
-// handleSaveData processes saving data to file with GUID filename
-// Persists data from memory to disk using UUID for unique filename generation
-func (ms *MenuSystem) handleSaveData() {
-	fmt.Println("\n=== Save Data to File ===")
-
-	if ms.service.GetFacilityCount() == 0 {
-		fmt.Println("No facilities in memory to save.")
-		return
-	}
-
-	filename, err := ms.service.SaveData()
-	if err != nil {
-		fmt.Printf("Error saving data: %v\n", err)
-		return
-	}
-
-	fmt.Printf("Successfully saved %d facilities to: %s\n", ms.service.GetFacilityCount(), filename)
 }
 
 // handleDisplayRecords provides options to display one or multiple records
