@@ -292,7 +292,7 @@ func (fs *FacilityService) GetDataSummary() string {
 		}
 	}
 
-	summary := fmt.Sprintf("Data Summary:\n")
+	summary := "Data Summary:\n"
 	summary += fmt.Sprintf("- Total facilities: %d\n", totalFacilities)
 	summary += fmt.Sprintf("- Facilities with emissions data: %d\n", facilitiesWithEmissions)
 	summary += fmt.Sprintf("- Provinces represented: %d\n", len(provinceCount))

@@ -78,3 +78,16 @@ func (mr *DBrepository) DeleteFacilityByID(id string) error {
     )
     return err
 }
+
+func (mr *DBrepository) AddFacility(f *models.Facility) error {
+    _, err := mr.db.Exec(`
+        INSERT INTO facilities
+        (npriid, facilityname, companyname, address, city, province, postalcode,
+         latitude, longitude, emissions, units, facilitydetails, facilityinfo, reportyear)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        f.NPRIID, f.FacilityName, f.CompanyName, f.Address, f.City, f.Province,
+        f.PostalCode, f.Latitude, f.Longitude, f.Emissions, f.Units,
+        f.FacilityDetails, f.FacilityInfo, f.ReportYear,
+    )
+    return err
+}
