@@ -167,7 +167,7 @@ func (fs *FacilityService) AddFacility(facility *models.Facility) error {
 	return nil
 }
 
-// UpdateFacility updates an existing facility in the data structure
+// UpdateFacility updates an existing facility in memory and DB
 // Parameters:
 //   index - index of facility to update
 //   fieldName - name of field to update
@@ -181,8 +181,13 @@ func (fs *FacilityService) UpdateFacility(index int, fieldName, newValue string)
 		return fmt.Errorf("index %d out of bounds (0-%d)", index, len(fs.facilities)-1)
 	}
 
-	// Use model's update method to maintain encapsulation
-	return fs.facilities[index].UpdateField(fieldName, newValue)
+    // Update in-memory
+    facility := fs.facilities[index]
+    if err := facility.UpdateField(fieldName, newValue); err != nil {
+        return err
+    }
+    // Write back to repo/db
+    return fs.repository.UpdateAllFacilityInfo(facility)
 }
 
 // DeleteFacility removes a facility from memory and repository
