@@ -71,3 +71,10 @@ func (mr *DBrepository) UpdateAllFacilityInfo(f *models.Facility) error {
     )
     return err
 }
+
+func (mr *DBrepository) DeleteFacilityByID(id string) error {
+    _, err := mr.db.Exec(
+        `DELETE FROM facilities WHERE npriid = ?`, id,
+    )
+    return err
+}
