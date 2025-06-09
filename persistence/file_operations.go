@@ -190,3 +190,11 @@ func (fr *FileRepository) GetFileInfo() (string, error) {
 	return fmt.Sprintf("File: %s, Size: %d bytes, Modified: %s",
 		fr.defaultFileName, info.Size(), info.ModTime().Format("2006-01-02 15:04:05")), nil
 }
+
+func (fr *FileRepository) UpdateFacility(f *models.Facility) error {
+    return nil
+}
+
+func (fr *FileRepository) DeleteFacilityByID(npriid string) error {
+    return nil
+}

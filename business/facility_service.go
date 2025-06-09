@@ -22,15 +22,15 @@ import (
 // Manages the in-memory data structure and coordinates with persistence layer
 type FacilityService struct {
 	facilities []*models.Facility     // In-memory data structure (slice/array) storing facility objects
-	repository *persistence.FileRepository // Reference to persistence layer
+	repository persistence.FacilityRepo // FacilityRepo interface
 }
 
 // NewFacilityService creates a new facility service instance
 // Parameters:
-//   repository - file repository for data persistence operations
+//   repository - repository for data persistence operations
 // Returns:
 //   *FacilityService - new service instance with empty facility collection
-func NewFacilityService(repository *persistence.FileRepository) *FacilityService {
+func NewFacilityService(repository persistence.FacilityRepo) *FacilityService {
 	return &FacilityService{
 		facilities: make([]*models.Facility, 0),
 		repository: repository,
@@ -61,24 +61,6 @@ func (fs *FacilityService) ReloadData() (int, error) {
 		return 0, err
 	}
 	return len(fs.facilities), nil
-}
-
-// SaveData persists the current in-memory data to a new CSV file
-// Returns:
-//   string - filename of the saved file
-//   error - any error encountered during data saving
-// Uses GUID/UUID for unique filename generation via persistence layer
-func (fs *FacilityService) SaveData() (string, error) {
-	if len(fs.facilities) == 0 {
-		return "", fmt.Errorf("no facilities to save")
-	}
-
-	filename, err := fs.repository.SaveFacilitiesToFile(fs.facilities)
-	if err != nil {
-		return "", fmt.Errorf("failed to save facilities: %w", err)
-	}
-
-	return filename, nil
 }
 
 // GetAllFacilities returns all facilities in the data structure
@@ -203,7 +185,7 @@ func (fs *FacilityService) UpdateFacility(index int, fieldName, newValue string)
 	return fs.facilities[index].UpdateField(fieldName, newValue)
 }
 
-// DeleteFacility removes a facility from the data structure by index
+// DeleteFacility removes a facility from memory and repository
 // Parameters:
 //   index - index of facility to delete
 // Returns:
@@ -214,6 +196,11 @@ func (fs *FacilityService) DeleteFacility(index int) error {
 	if index < 0 || index >= len(fs.facilities) {
 		return fmt.Errorf("index %d out of bounds (0-%d)", index, len(fs.facilities)-1)
 	}
+
+	npriid := fs.facilities[index].NPRIID
+    if err := fs.repository.DeleteFacilityByID(npriid); err != nil {
+        return err
+    }
 
 	// Remove facility from slice using array manipulation
 	fs.facilities = append(fs.facilities[:index], fs.facilities[index+1:]...)
