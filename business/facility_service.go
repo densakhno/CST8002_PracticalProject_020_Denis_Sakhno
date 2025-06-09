@@ -139,7 +139,7 @@ func (fs *FacilityService) SearchFacilities(searchTerm string) []*models.Facilit
 	return result
 }
 
-// AddFacility adds a new facility to the in-memory data structure
+// AddFacility adds a new facility to the in-memory data structure and DB
 // Parameters:
 //   facility - facility object to add
 // Returns:
@@ -161,6 +161,11 @@ func (fs *FacilityService) AddFacility(facility *models.Facility) error {
 			return fmt.Errorf("facility with NPRI ID %s already exists", facility.NPRIID)
 		}
 	}
+
+	// Add to DB (or file)
+    if err := fs.repository.AddFacility(facility); err != nil {
+        return fmt.Errorf("error adding facility to repository: %w", err)
+    }
 
 	// Add to data structure (array/slice)
 	fs.facilities = append(fs.facilities, facility)
