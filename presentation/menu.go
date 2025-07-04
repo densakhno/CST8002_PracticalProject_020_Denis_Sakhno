@@ -66,7 +66,7 @@ func (ms *MenuSystem) DisplayMainMenu() {
 	fmt.Println("7. View data summary")
 	fmt.Println("8. Exit")
 	fmt.Printf("\nCurrent facilities in memory: %d\n", ms.service.GetFacilityCount())
-	fmt.Print("Select an option (1-9): ")
+	fmt.Print("Select an option (1-8): ")
 }
 
 // RunMainLoop executes the main application loop with user interactions

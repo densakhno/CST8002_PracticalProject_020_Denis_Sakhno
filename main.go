@@ -60,7 +60,7 @@ func main() {
         os.Exit(0)
     }
 
-    // Normal application mode
+    // Regular application CLI mode
 	var repo persistence.FacilityRepo
     var err error
 
