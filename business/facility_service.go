@@ -1,7 +1,7 @@
 /*
-Course: CST 8333 Programming Language Research Project
-Professor: Stanley Pieda
-Due Date: June 15, 2025
+Course: CST 8002 Programming Language Research Project
+Professor: Stanley Pieda, Tyler DeLay
+Due Date: July 13, 2025
 Author: Denis Sakhno
 Description: Business layer for NPRI facility management operations
 This file contains the business logic for managing facility data in memory including CRUD operations.

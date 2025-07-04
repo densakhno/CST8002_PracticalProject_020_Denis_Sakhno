@@ -1,7 +1,7 @@
 /*
-Course: CST 8333 Programming Language Research Project
-Professor: Stanley Pieda
-Due Date: June 15, 2025
+Course: CST 8002 Programming Language Research Project
+Professor: Stanley Pieda, Tyler DeLay
+Due Date: July 13, 2025
 Author: Denis Sakhno
 Description: Presentation layer for NPRI facility management system
 This file handles all user interactions and menu operations for the facility management application.

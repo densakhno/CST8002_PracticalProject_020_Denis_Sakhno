@@ -1,7 +1,7 @@
 /*
-Course: CST 8333 Programming Language Research Project
-Professor: Stanley Pieda
-Due Date: June 15, 2025
+Course: CST 8002 Programming Language Research Project
+Professor: Stanley Pieda, Tyler DeLay
+Due Date: July 13, 2025
 Author: Denis Sakhno
 Description: Persistence layer for NPRI facility data operations
 This file handles all file I/O operations including reading CSV files and writing data with GUID filenames.

@@ -1,7 +1,7 @@
 /*
-Course: CST 8333 Programming Language Research Project
-Professor: Stanley Pieda
-Due Date: June 15, 2025
+Course: CST 8002 Programming Language Research Project
+Professor: Stanley Pieda, Tyler DeLay
+Due Date: July 13, 2025
 Author: Denis Sakhno
 Description: Facility model/entity representing NPRI pollution facility records
 This file contains the data structure definition for facility records with validation methods
