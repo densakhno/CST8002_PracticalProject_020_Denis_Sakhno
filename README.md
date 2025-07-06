@@ -37,7 +37,6 @@ Each facility record includes:
 1. **Go Version:** 1.23.1 or later
 2. **Dependencies:**
    - github.com/go-sql-driver/mysql
-   - github.com/google/uuid
 3. **Database:**
    - MySQL server required
    - Use `sql_scripts.txt` to create the database and `facilities` table:

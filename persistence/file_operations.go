@@ -13,10 +13,8 @@ import (
 	"encoding/csv"
 	"fmt"
 	"os"
-	"path/filepath"
 
 	"github.com/denissakhno/CST8002_PracticalProject_020/models"
-	"github.com/google/uuid"
 )
 
 const PathToData = "data/data.csv"
@@ -102,62 +100,6 @@ func (fr *FileRepository) LoadFacilitiesFromFile(filename string) ([]*models.Fac
 	}
 
 	return facilities, nil
-}
-
-// SaveFacilitiesToFile writes facility data to a CSV file with GUID filename
-// Parameters:
-//   facilities - slice of facility pointers to save
-// Returns:
-//   string - generated filename
-//   error - any error encountered during file operations
-// Uses UUID API to generate unique filenames for output files
-func (fr *FileRepository) SaveFacilitiesToFile(facilities []*models.Facility) (string, error) {
-	if len(facilities) == 0 {
-		return "", fmt.Errorf("no facilities to save")
-	}
-
-	// Generate unique filename using UUID API
-	guid := uuid.New()
-	filename := fmt.Sprintf("npri_facilities_%s.csv", guid.String())
-
-	// Create output file with proper error handling
-	file, err := os.Create(filename)
-	if err != nil {
-		return "", fmt.Errorf("failed to create file %s: %w", filename, err)
-	}
-	defer file.Close()
-
-	// Create CSV writer using the encoding/csv API library
-	writer := csv.NewWriter(file)
-	defer writer.Flush()
-
-	// Write CSV header
-	header := []string{
-		"NPRI ID", "Facility name", "Company name", "Address",
-		"City", "Province", "PostalCode", "Latitude",
-		"Longitude", "Emissions", "Units", "Facility details",
-		"Facility information", "Report year",
-	}
-
-	if err := writer.Write(header); err != nil {
-		return "", fmt.Errorf("failed to write CSV header: %w", err)
-	}
-
-	// Write facility records using loop structure
-	for _, facility := range facilities {
-		record := facility.ToCSVRecord()
-		if err := writer.Write(record); err != nil {
-			return "", fmt.Errorf("failed to write facility record: %w", err)
-		}
-	}
-
-	// Get absolute path for user feedback
-	absPath, err := filepath.Abs(filename)
-	if err != nil {
-		absPath = filename // Fall back to relative path
-	}
-
-	return absPath, nil
 }
 
 // CheckFileExists validates if a file exists and is readable
