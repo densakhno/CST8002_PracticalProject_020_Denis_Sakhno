@@ -11,6 +11,7 @@ package business
 
 import (
 	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -269,6 +270,62 @@ func (fs *FacilityService) GetTopEmitters(limit int) []*models.Facility {
 	}
 
 	return emissionFacilities[:limit]
+}
+
+// SortFacilitiesByMulti sorts the facilities in memory by multiple columns and orders.
+// Parameters:
+//   fields - slice of field names to sort by (in priority order)
+//   ascending - slice of bools, true for ascending, false for descending, must match fields length
+// Returns:
+//   error - if any field is invalid or lengths mismatch
+func (fs *FacilityService) SortFacilitiesByMulti(fields []string, asc []bool) error {
+	if len(fields) == 0 || len(fields) != len(asc) {
+		return fmt.Errorf("fields and ascending slices must be non-empty and of equal length")
+	}
+
+	// Map field names to extractor functions
+	type extractor func(f *models.Facility) string
+	fieldExtractors := map[string]extractor{
+		"npriid": func(f *models.Facility) string { return f.NPRIID },
+		"facilityname": func(f *models.Facility) string { return f.FacilityName },
+		"companyname": func(f *models.Facility) string { return f.CompanyName },
+		"address": func(f *models.Facility) string { return f.Address },
+		"city": func(f *models.Facility) string { return f.City },
+		"province": func(f *models.Facility) string { return f.Province },
+		"postalcode": func(f *models.Facility) string { return f.PostalCode },
+		"latitude": func(f *models.Facility) string { return f.Latitude },
+		"longitude": func(f *models.Facility) string { return f.Longitude },
+		"emissions": func(f *models.Facility) string { return f.Emissions },
+		"units": func(f *models.Facility) string { return f.Units },
+		"facilitydetails": func(f *models.Facility) string { return f.FacilityDetails },
+		"facilityinfo": func(f *models.Facility) string { return f.FacilityInfo },
+		"reportyear": func(f *models.Facility) string { return f.ReportYear },
+	}
+
+	// Validate fields
+	for _, field := range fields {
+		if _, ok := fieldExtractors[strings.ToLower(field)]; !ok {
+			return fmt.Errorf("invalid field for sorting: %s", field)
+		}
+	}
+
+	sort.SliceStable(fs.facilities, func(i, j int) bool {
+		for k, field := range fields {
+			extractor := fieldExtractors[strings.ToLower(field)]
+			vali := extractor(fs.facilities[i])
+			valj := extractor(fs.facilities[j])
+			if vali == valj {
+				continue
+			}
+			if asc[k] {
+				return vali < valj
+			} else {
+				return vali > valj
+			}
+		}
+		return false // equal
+	})
+	return nil
 }
 
 // GetDataSummary returns a summary of the current data in memory
