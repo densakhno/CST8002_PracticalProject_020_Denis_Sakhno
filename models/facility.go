@@ -205,3 +205,39 @@ func GetFieldNames() []string {
 		"facilityinfo", "reportyear",
 	}
 }
+
+// FieldKeyMap maps user-friendly field names to struct keys for sorting and editing
+var FieldKeyMap = map[string]string{
+	"npriid": "npriid",
+	"facilityid": "npriid",
+	"facility name": "facilityname",
+	"facilityname": "facilityname",
+	"company name": "companyname",
+	"companyname": "companyname",
+	"address": "address",
+	"city": "city",
+	"province": "province",
+	"postal code": "postalcode",
+	"postalcode": "postalcode",
+	"latitude": "latitude",
+	"longitude": "longitude",
+	"emissions": "emissions",
+	"units": "units",
+	"facility details": "facilitydetails",
+	"facilitydetails": "facilitydetails",
+	"facility info": "facilityinfo",
+	"facilityinfo": "facilityinfo",
+	"report year": "reportyear",
+	"reportyear": "reportyear",
+}
+
+// NormalizeFieldKey normalizes user input to a struct field key for sorting/editing
+func NormalizeFieldKey(input string) (string, bool) {
+	key := strings.ToLower(strings.ReplaceAll(strings.ReplaceAll(input, " ", ""), "_", ""))
+	for userKey, structKey := range FieldKeyMap {
+		if key == strings.ToLower(strings.ReplaceAll(strings.ReplaceAll(userKey, " ", ""), "_", "")) {
+			return structKey, true
+		}
+	}
+	return "", false
+}
