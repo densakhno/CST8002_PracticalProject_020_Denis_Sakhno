@@ -59,14 +59,15 @@ func (ms *MenuSystem) DisplayMainMenu() {
 	fmt.Println("═══ Main Menu ═══")
 	fmt.Println("1. Reload data from dataset")
 	fmt.Println("2. Display records")
-	fmt.Println("3. Create new record")
-	fmt.Println("4. Edit existing record")
-	fmt.Println("5. Delete record")
-	fmt.Println("6. Search facilities")
-	fmt.Println("7. View data summary")
-	fmt.Println("8. Exit")
+	fmt.Println("3. Sort records by multiple columns") // NEW OPTION
+	fmt.Println("4. Create new record")
+	fmt.Println("5. Edit existing record")
+	fmt.Println("6. Delete record")
+	fmt.Println("7. Search facilities")
+	fmt.Println("8. View data summary")
+	fmt.Println("9. Exit")
 	fmt.Printf("\nCurrent facilities in memory: %d\n", ms.service.GetFacilityCount())
-	fmt.Print("Select an option (1-8): ")
+	fmt.Print("Select an option (1-9): ")
 }
 
 // RunMainLoop executes the main application loop with user interactions
@@ -102,16 +103,18 @@ func (ms *MenuSystem) RunMainLoop() {
 		case "2":
 			ms.handleDisplayRecords()
 		case "3":
-			ms.handleCreateRecord()
+			ms.handleSortRecordsByMulti()
 		case "4":
-			ms.handleEditRecord()
+			ms.handleCreateRecord()
 		case "5":
-			ms.handleDeleteRecord()
+			ms.handleEditRecord()
 		case "6":
-			ms.handleSearchFacilities()
+			ms.handleDeleteRecord()
 		case "7":
-			ms.handleDataSummary()
+			ms.handleSearchFacilities()
 		case "8":
+			ms.handleDataSummary()
+		case "9":
 			ms.handleExit()
 			return
 		default:
@@ -490,4 +493,59 @@ func (ms *MenuSystem) handleExit() {
 	fmt.Println("Thank you for using NPRI Facility Management System!")
 	fmt.Println("Author: Denis Sakhno")
 	fmt.Println("Program terminated successfully.")
+}
+
+// handleSortRecordsByMulti handles sorting records by multiple columns and orders
+func (ms *MenuSystem) handleSortRecordsByMulti() {
+	fmt.Println("\n=== Sort Records by Multiple Columns ===")
+	if ms.service.GetFacilityCount() == 0 {
+		fmt.Println("No facilities loaded in memory.")
+		return
+	}
+
+	fieldNames := models.GetFieldNames()
+	fmt.Println("Available fields:")
+	for i, name := range fieldNames {
+		fmt.Printf("%d. %s\n", i+1, name)
+	}
+	fmt.Println("Enter the fields to sort by, separated by commas (e.g., city,province,emissions):")
+	fmt.Print("Fields: ")
+	if !ms.scanner.Scan() {
+		return
+	}
+	fieldsInput := strings.ToLower(strings.TrimSpace(ms.scanner.Text()))
+	if fieldsInput == "" {
+		fmt.Println("No fields entered. Operation cancelled.")
+		return
+	}
+	fields := strings.Split(fieldsInput, ",")
+	for i := range fields {
+		fields[i] = strings.TrimSpace(fields[i])
+	}
+
+	asc := make([]bool, len(fields))
+	for i, field := range fields {
+		fmt.Printf("Sort %s ascending or descending? (a/d): ", field)
+		if !ms.scanner.Scan() {
+			return
+		}
+		order := strings.ToLower(strings.TrimSpace(ms.scanner.Text()))
+		if order == "a" || order == "asc" || order == "ascending" {
+			asc[i] = true
+		} else if order == "d" || order == "desc" || order == "descending" {
+			asc[i] = false
+		} else {
+			fmt.Println("Invalid order, defaulting to ascending.")
+			asc[i] = true
+		}
+	}
+
+	err := ms.service.SortFacilitiesByMulti(fields, asc)
+	if err != nil {
+		fmt.Printf("Error sorting facilities: %v\n", err)
+		return
+	}
+
+	fmt.Println("Facilities sorted successfully! Displaying sorted records:")
+	ms.displayAllRecords()
 }
